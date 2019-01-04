@@ -50,7 +50,7 @@ public class Listitem extends AppCompatActivity {
 
         loading =  ProgressDialog.show(this,"Loading","please wait",false,true);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.googleusercontent.com/macros/echo?user_content_key=HRgemkvXO03cAwbApFjyvha6RSIWalfqp8bfVl9Q4LFQJdrBiBuhh8RlvMUL3cEg-WdnmUicFWU2yA_Bkyfaq620pXXJx5W1m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnAHX2oYGUYPq92ac2VpoXmlIMSkkfHskxanRL5SZq9ifsTNpzxJny0BIf8bpJS8J4_35QAorMrJRQAuZonbe0ThFANynNkYsLQ&lib=MjaufEyJJxgpFC2q5LwJaCSb2UmMYTr8Y",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbz4MI6q8FQh5VUpE6MgbmXUFFZ1gRzXE07SOBDwqyAE0OtEUqC_/exec?action=getItems",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -83,7 +83,7 @@ public class Listitem extends AppCompatActivity {
 
         try {
             JSONObject jobj = new JSONObject(jsonResposnce);
-            JSONArray jarray = jobj.getJSONArray("items'");
+            JSONArray jarray = jobj.getJSONArray("items");
 
 
             for (int i = 0; i < jarray.length(); i++) {
@@ -95,12 +95,12 @@ public class Listitem extends AppCompatActivity {
                 String job = jo.getString("job");
 
 
-                HashMap<String, String> info = new HashMap<>();
-                info.put("name", name);
-                info.put("id", id);
-                info.put("job",job);
+                HashMap<String, String> item = new HashMap<>();
+                item.put("name", name);
+                item.put("id", id);
+                item.put("job",job);
 
-                list.add(info);
+                list.add(item);
 
 
             }
