@@ -47,19 +47,76 @@ public class Additem extends AppCompatActivity implements View.OnClickListener {
 
     //This is the part where data is transafeered from Your Android phone to Sheet by using HTTP Rest API calls
 
+    private void   addItemToSheet() {
+
+        final ProgressDialog loading = ProgressDialog.show(this,"Adding Item","Please wait");
+        final String name = editTextName.getText().toString().trim();
+        final String id = editTextId.getText().toString().trim();
+        final String age = editTextAge.getText().toString().trim();
+        final String job = editTextJob.getText().toString().trim();
+
+
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbz4MI6q8FQh5VUpE6MgbmXUFFZ1gRzXE07SOBDwqyAE0OtEUqC_/exec",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        loading.dismiss();
+                        Toast.makeText(Additem.this,response,Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> parmas = new HashMap<>();
+
+                //here we pass params
+                parmas.put("action","addItem");
+                parmas.put("name",name);
+                parmas.put("id",id);
+                parmas.put("age",age);
+                parmas.put("job",job);
+
+                return parmas;
+            }
+        };
+
+        int socketTimeOut = 50000;// u can change this .. here it is 50 seconds
+
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(retryPolicy);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        queue.add(stringRequest);
+
+
+    }
+
+
+
+
     @Override
     public void onClick(View v) {
 
-        if(v==buttonAddItem){
+        if (v == buttonAddItem) {
             //addItemToSheet();
 
 
-            AddItemToSheet addItemToSheet = new AddItemToSheet(editTextName,editTextId,editTextAge,editTextJob,this);
+            AddItemToSheet addItemToSheet = new AddItemToSheet(editTextName, editTextId, editTextAge, editTextJob, this);
             addItemToSheet.addItemToSheet();
             //Define what to do when button is clicked
         }
-
-
-
     }
 }

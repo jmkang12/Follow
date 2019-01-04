@@ -15,10 +15,12 @@
         android:text="Add Item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <Button
-        android:id="@+id/get_test"
+        android:id="@+id/btn_read_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="getTest" />
+        android:layout_marginTop="45dp"
+        android:text="Read Item"
+        app:layout_constraintStart_toStartOf="@+id/btn_add_item"
+        app:layout_constraintTop_toBottomOf="@+id/btn_add_item" />
 </android.support.constraint.ConstraintLayout>
