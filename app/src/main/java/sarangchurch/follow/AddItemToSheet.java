@@ -1,16 +1,12 @@
 package sarangchurch.follow;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,33 +19,20 @@ import com.android.volley.toolbox.Volley;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Additem extends AppCompatActivity implements View.OnClickListener {
-
-
-    EditText editTextName,editTextId,editTextAge,editTextJob;
-    Button buttonAddItem;
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.add_item);
-
-        editTextName = (EditText)findViewById(R.id.et_name);
-        editTextId = (EditText)findViewById(R.id.et_id);
-        editTextAge = (EditText)findViewById(R.id.et_age);
-        editTextJob = (EditText)findViewById(R.id.et_job);
-
-        buttonAddItem = (Button)findViewById(R.id.btn_add_item);
-        buttonAddItem.setOnClickListener(this);
-
-
+public class AddItemToSheet {
+    AddItemToSheet(EditText editTextName, EditText editTextId, EditText editTextAge, EditText editTextJob, Context context){
+        this.editTextName=editTextName;
+        this.editTextAge=editTextAge;
+        this.editTextId=editTextId;
+        this.editTextJob=editTextJob;
+        this.context=context;
     }
+    EditText editTextName,editTextId,editTextAge,editTextJob;
+    Context context;
 
-    //This is the part where data is transafeered from Your Android phone to Sheet by using HTTP Rest API calls
+    public void  addItemToSheet() {
 
-    private void   addItemToSheet() {
-
-        final ProgressDialog loading = ProgressDialog.show(this,"Adding Item","Please wait");
+        final ProgressDialog loading = ProgressDialog.show(context,"Adding Item","Please wait");
         final String name = editTextName.getText().toString().trim();
         final String id = editTextId.getText().toString().trim();
         final String age = editTextAge.getText().toString().trim();
@@ -62,11 +45,11 @@ public class Additem extends AppCompatActivity implements View.OnClickListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        Log.e("response",response);
                         loading.dismiss();
-                        Toast.makeText(Additem.this,response,Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(intent);
+                        Toast.makeText(context,response,Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(context.getApplicationContext(),MainActivity.class);
+                        context.startActivity(intent);
 
                     }
                 },
@@ -97,26 +80,10 @@ public class Additem extends AppCompatActivity implements View.OnClickListener {
         RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         stringRequest.setRetryPolicy(retryPolicy);
 
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue queue = Volley.newRequestQueue(context);
 
         queue.add(stringRequest);
 
 
-    }
-
-
-
-
-    @Override
-    public void onClick(View v) {
-
-        if (v == buttonAddItem) {
-            //addItemToSheet();
-
-
-            AddItemToSheet addItemToSheet = new AddItemToSheet(editTextName, editTextId, editTextAge, editTextJob, this);
-            addItemToSheet.addItemToSheet();
-            //Define what to do when button is clicked
-        }
     }
 }
