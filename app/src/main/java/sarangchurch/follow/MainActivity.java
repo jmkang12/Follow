@@ -8,14 +8,16 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button buttonAddItem;
+    Button buttonAddItem, buttonGetItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         buttonAddItem = (Button)findViewById(R.id.btn_add_item);
+        buttonGetItems = (Button)findViewById(R.id.get_test);
         buttonAddItem.setOnClickListener(this);
+        buttonGetItems.setOnClickListener(this);
 
     }
 
@@ -25,6 +27,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v==buttonAddItem){
 
             Intent intent = new Intent(getApplicationContext(),Additem.class);
+            startActivity(intent);
+        }
+
+        if(v==buttonGetItems){
+           // GetItems getItems = new GetItems(this);
+            Intent intent = new Intent(getApplicationContext(),GetItems.class);
             startActivity(intent);
         }
 
