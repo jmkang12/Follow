@@ -12,6 +12,7 @@ public class EditUserInfo extends AppCompatActivity implements View.OnClickListe
 
     Button ButtonEditUserInfo;
     EditText editName,editBirth;
+    boolean bool;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +21,9 @@ public class EditUserInfo extends AppCompatActivity implements View.OnClickListe
         editBirth = (EditText)findViewById(R.id.et_userbirth);
         ButtonEditUserInfo = (Button)findViewById(R.id.btn_file);
         ButtonEditUserInfo.setOnClickListener(this);
+
+
+
     }
 
 
@@ -33,7 +37,7 @@ public class EditUserInfo extends AppCompatActivity implements View.OnClickListe
             MakeUserInfo mui = new MakeUserInfo();
             mui.WriteFile(name, birth);
             Log.e(mui.getName(),mui.getBirth());
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(),Loading.class);
             startActivity(intent);
         }
 

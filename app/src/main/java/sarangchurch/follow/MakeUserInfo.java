@@ -53,7 +53,7 @@ public class MakeUserInfo {
 
     }
 
-    public void ReadFile(){//파일 속 이름 생일을 변수에 저장
+    public static void ReadFile(){//파일 속 이름 생일을 변수에 저장
 
         String line = null; // 한줄씩 읽기
         File saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/follow"); // 저장 경로
