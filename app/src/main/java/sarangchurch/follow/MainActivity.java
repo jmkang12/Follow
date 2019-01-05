@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button buttonAddItem,buttonReadItems,buttonFile;
+    Button buttonAddItem,buttonReadItems,buttonFile,buttonAT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonAddItem = (Button)findViewById(R.id.btn_add_item);
         buttonReadItems = (Button)findViewById(R.id.btn_read_item);
         buttonFile = (Button)findViewById(R.id.btn_file);
+        buttonAT=(Button)findViewById(R.id.atcheck);
+        buttonAT.setOnClickListener(this);
         buttonAddItem.setOnClickListener(this);
         buttonReadItems.setOnClickListener(this);
         buttonFile.setOnClickListener(this);
@@ -46,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(v==buttonFile){
             Intent intent = new Intent(getApplicationContext(),EditUserInfo.class);
+            startActivity(intent);
+        }
+        if(v==buttonAT){
+            Intent intent = new Intent(getApplicationContext(),AttendanceCheck.class);
             startActivity(intent);
         }
 

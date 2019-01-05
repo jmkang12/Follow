@@ -31,4 +31,10 @@
         android:text="File"
         app:layout_constraintStart_toStartOf="@+id/btn_read_item"
         app:layout_constraintTop_toBottomOf="@+id/btn_read_item" />
+
+    <Button
+        android:id="@+id/atcheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="출석체크" />
 </android.support.constraint.ConstraintLayout>

@@ -28,6 +28,7 @@
         <activity android:name=".Listitem"/>
         <activity android:name=".EditUserInfo"/>
         <activity android:name=".Login"/>
+        <activity android:name=".AttendanceCheck"/>
     </application>
 
 </manifest>

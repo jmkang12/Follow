@@ -26,7 +26,7 @@ public class CompareForLogin {
 
     public void CompareName(final String cpname, Context context){
 
-
+        Log.e("ERR",MakeUserInfo.getName());
 
 
         loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
@@ -60,6 +60,7 @@ public class CompareForLogin {
 
                             }
                         } catch (JSONException e) {
+                            Log.e("ERR","ERRRRRR");
                             e.printStackTrace();
                         }
 
