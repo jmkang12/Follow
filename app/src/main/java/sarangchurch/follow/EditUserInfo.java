@@ -23,7 +23,6 @@ public class EditUserInfo extends AppCompatActivity implements View.OnClickListe
         ButtonEditUserInfo.setOnClickListener(this);
 
 
-
     }
 
 
@@ -36,7 +35,6 @@ public class EditUserInfo extends AppCompatActivity implements View.OnClickListe
             String birth = editBirth.getText().toString().trim();
             MakeUserInfo mui = new MakeUserInfo();
             mui.WriteFile(name, birth);
-            Log.e(mui.getName(),mui.getBirth());
             Intent intent = new Intent(getApplicationContext(),Loading.class);
             startActivity(intent);
         }

@@ -1,9 +1,13 @@
 package sarangchurch.follow;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -25,11 +29,6 @@ public class Loading extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-
-
-
-
-
 
 
 
@@ -60,9 +59,9 @@ public class Loading extends AppCompatActivity {
         }
 
         if(bool){
-            Listitem temp = new Listitem();
+            CompareForLogin temp = new CompareForLogin();
             temp.CompareName(MakeUserInfo.getName(),this);
-            bool=Listitem.bool;
+            bool=CompareForLogin.bool;
             Log.e("check"," "+bool);
         }
 
