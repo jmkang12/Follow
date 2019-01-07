@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -34,6 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AttendanceCheck extends AppCompatActivity {
 
@@ -60,14 +62,22 @@ public class AttendanceCheck extends AppCompatActivity {
                     List<String> temp = null;
                     int cntChoice = listView.getCount();
                     SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
-                    Log.e("TAG???", "checkedPositions: " + checkedItems.get(0));
+                    Log.e("TAG???", "checkedPositions: " + checkedItems.get(3));
                     if (checkedItems != null) {
                         Log.i("TAG???", "checkedPositions: " + checkedItems.size());
                         for (int i = 0; i < cntChoice; i++) {
                             if (checkedItems.get(i)) {
-                                String item = listView.getAdapter().getItem(
-                                        checkedItems.keyAt(i)).toString();
-                                Log.e("TAG", item + " was selected");
+                                String item = listView.getAdapter().getItem(i).toString();
+                                int n_start,n_end,g_start,g_end;
+                                n_start=item.lastIndexOf('=');
+                                n_end=item.indexOf('}');
+                                g_start=item.indexOf('=');
+                                g_end=item.indexOf(',');
+                                String name,grade;
+                                name=item.substring(n_start+1,n_end);
+                                grade=item.substring(g_start+1,g_end);
+                                addItemToSheet(name,grade);
+                                Log.e("TAG", name + " was selected"+grade);
                             }
                         }
                     } else {
@@ -79,6 +89,57 @@ public class AttendanceCheck extends AppCompatActivity {
 
         });
 
+    }
+
+
+    private void   addItemToSheet(String Name,String Grade) {
+
+        final String name=Name;
+        final String grade=Grade;
+        Log.e("E", "my2");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzXYrNIRWtdlho_7DjzlETwcEywXUabnrrHLGtM6fJrr6r0fyOr/exec",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Log.e("E", "my3");
+                        loading.dismiss();
+                        Toast.makeText(AttendanceCheck.this,response,Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("E", "my4");
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> parmas = new HashMap<>();
+
+                //here we pass params
+                parmas.put("action","update");
+                parmas.put("name",name);
+                parmas.put("grade",grade);
+
+                Log.e("E", "my5");
+                return parmas;
+            }
+        };
+
+        int socketTimeOut = 50000;// u can change this .. here it is 50 seconds
+
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(retryPolicy);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        queue.add(stringRequest);
     }
 
 

@@ -110,12 +110,9 @@ public class Additem extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        if (v == buttonAddItem) {
-            //addItemToSheet();
+        if(v==buttonAddItem){
+            addItemToSheet();
 
-
-            AddItemToSheet addItemToSheet = new AddItemToSheet(editTextName, editTextId, editTextAge, editTextJob, this);
-            addItemToSheet.addItemToSheet();
             //Define what to do when button is clicked
         }
     }

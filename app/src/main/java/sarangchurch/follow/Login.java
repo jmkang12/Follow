@@ -58,6 +58,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         if(v==buttonLogout){
             MakeUserInfo.setName(null);
             MakeUserInfo.setBirth(null);
+            CompareForLogin.bool=false;
             Intent intent = new Intent(getApplicationContext(),EditUserInfo.class);
             startActivity(intent);
         }
