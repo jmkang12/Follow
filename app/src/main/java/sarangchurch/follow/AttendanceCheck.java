@@ -1,14 +1,19 @@
 package sarangchurch.follow;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -30,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AttendanceCheck extends AppCompatActivity implements View.OnClickListener {
+public class AttendanceCheck extends AppCompatActivity {
 
     ListView listView;
     ListAdapter adapter;
@@ -46,8 +51,33 @@ public class AttendanceCheck extends AppCompatActivity implements View.OnClickLi
         listView = (ListView) findViewById(R.id.attend);
 
         getItems();
-        buttonApply = (Button)findViewById(R.id.bt_checkapply);
-        buttonApply.setOnClickListener(this);
+        buttonApply = (Button) findViewById(R.id.bt_checkapply);
+        buttonApply.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (v == buttonApply) {
+                    Log.e("E", "my");
+                    List<String> temp = null;
+                    int cntChoice = listView.getCount();
+                    SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
+                    Log.e("TAG???", "checkedPositions: " + checkedItems.get(0));
+                    if (checkedItems != null) {
+                        Log.i("TAG???", "checkedPositions: " + checkedItems.size());
+                        for (int i = 0; i < cntChoice; i++) {
+                            if (checkedItems.get(i)) {
+                                String item = listView.getAdapter().getItem(
+                                        checkedItems.keyAt(i)).toString();
+                                Log.e("TAG", item + " was selected");
+                            }
+                        }
+                    } else {
+                        Log.e("EERRR", "NULL");
+//                Log.i("TAG???","checkedPositions: " + checkedItems.size());
+                    }
+                }
+            }
+
+        });
 
     }
 
@@ -107,7 +137,7 @@ public class AttendanceCheck extends AppCompatActivity implements View.OnClickLi
                 HashMap<String, String> item = new HashMap<>();
                // item.put("leadername", leadername);
                 item.put("name", name);
-                item.put("grade",grade);
+                item.put("grade",grade+"학년");
 
                 list.add(item);
 
@@ -117,36 +147,11 @@ public class AttendanceCheck extends AppCompatActivity implements View.OnClickLi
             Log.e("ERR","ERROR");
         }
 
-
         adapter = new SimpleAdapter(this,list,R.layout.attendance_check_list_row,
-                new String[]{"name","grade"},new int[]{R.id.name_blankAC,R.id.grade_blankAC});
-
-
+            new String[]{"name","grade"},new int[]{R.id.name_blankAC,R.id.grade_blankAC});
+       // listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(adapter);
 
         loading.dismiss();
-    }
-
-    public void onClick(View v) {
-
-
-        if (v == buttonApply) {
-            Log.e("E","my");
-            List<String> temp = null;
-            SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
-            int count = adapter.getCount() ;
-            Log.e("e"," "+count+checkedItems.get(count));
-
-            for (int i = count-1; i >= 0; i--) {
-                if (checkedItems.get(i)) {
-                    Log.e("e"," "+i);
-                    temp.add(listView.getAdapter().getItem(i).toString());
-                    Log.e("E",listView.getAdapter().getItem(i).toString());
-                }
-            }
-
-
-
-        }
     }
 }
