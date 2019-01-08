@@ -105,7 +105,7 @@ public class AttendanceCheck extends AppCompatActivity {
         final String leadername = name;
 
         loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "url",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbxu_F1a5Ow5-331YHF_me6Cd2Cau18CV9fAtn-8Lt6Bpn0HWIkf/exec",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
