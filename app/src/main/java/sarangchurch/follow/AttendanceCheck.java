@@ -52,6 +52,7 @@ public class AttendanceCheck extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attendance_check_list);
+        final Context context = this;
 
         listView = (ListView) findViewById(R.id.attend);
 
@@ -63,7 +64,7 @@ public class AttendanceCheck extends AppCompatActivity {
                 if (v == buttonApply) {
                     List<String> temp = null;
                     int cntChoice = listView.getCount();
-                    int checkednumber=0;
+                    Integer checkednumber=0;
                     SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
                     if (checkedItems != null) {
                         for (int i = 0; i < cntChoice; i++) {
@@ -79,15 +80,16 @@ public class AttendanceCheck extends AppCompatActivity {
                                 grade=item.substring(g_start+1,g_end);
                                 String date = new SimpleDateFormat("yyyy-MM-dd",   Locale.getDefault()).format(new Date());
 
-                                date = date.substring(2,4)+date.substring(5,7)+date.substring(8,10);
+                                date = date.substring(2,4)+"년"+date.substring(5,7)+date.substring(8,10);
                                 Log.e("Date", date);
-                                addItemToSheet(name,grade,date);
+                                addItemToSheet(context,name,grade,date);
                                 checkednumber++;
                             }
                         }
                     } else {
 //                Log.i("TAG???","checkedPositions: " + checkedItems.size());
                     }
+                    addAttendanceNumerToSheet(context,checkednumber);
                     Log.e("Number", ""+checkednumber);
 
                 }
@@ -98,12 +100,58 @@ public class AttendanceCheck extends AppCompatActivity {
     }
 
 
-    private void   addItemToSheet(String Name, String Grade, String Date) {
+    private void addAttendanceNumerToSheet(Context context, Integer checkednumber){
+        final String number = checkednumber.toString();
+
+        loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "url",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        loading.dismiss();
+                        Toast.makeText(AttendanceCheck.this,response,Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> parmas = new HashMap<>();
+
+                //here we pass params
+                parmas.put("action","add");
+                parmas.put("number",number);
+
+                return parmas;
+            }
+        };
+
+        int socketTimeOut = 50000;// u can change this .. here it is 50 seconds
+
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        stringRequest.setRetryPolicy(retryPolicy);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        queue.add(stringRequest);
+    }
+
+
+
+    private void   addItemToSheet(Context context,String Name, String Grade, String Date) {
 
         final String name=Name;
         final String grade=Grade;
         final String date=Date;
-
+        loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzXYrNIRWtdlho_7DjzlETwcEywXUabnrrHLGtM6fJrr6r0fyOr/exec",
                 new Response.Listener<String>() {
                     @Override
