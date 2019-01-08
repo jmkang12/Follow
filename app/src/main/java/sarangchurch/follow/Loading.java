@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,12 @@ public class Loading extends AppCompatActivity {
     TextView textView;
     Boolean bool;
     public  static Activity activity;
+    private final long FINSH_INTERVAL_TIME    = 2000;
+    private long  backPressedTime        = 0;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,19 @@ public class Loading extends AppCompatActivity {
         loading1();
 
     }
+    @Override
+    public void onBackPressed() {
+        long tempTime        = System.currentTimeMillis();
+        long intervalTime    = tempTime - backPressedTime;
+
+        if ( 0 <= intervalTime && FINSH_INTERVAL_TIME >= intervalTime ) {
+            super.onBackPressed();
+        }
+        else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(),"'뒤로'버튼을한번더누르시면종료됩니다.",Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private  void loading1() {
         Handler handler = new Handler();
@@ -108,8 +128,6 @@ public class Loading extends AppCompatActivity {
             public void run() {
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
-                overridePendingTransition(0,0);
-
 
             }
         },500);

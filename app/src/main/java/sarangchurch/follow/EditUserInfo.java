@@ -37,6 +37,7 @@ public class EditUserInfo extends AppCompatActivity implements View.OnClickListe
             mui.WriteFile(name, birth);
             Intent intent = new Intent(getApplicationContext(),Loading.class);
             startActivity(intent);
+            EditUserInfo.this.finish();
         }
 
     }

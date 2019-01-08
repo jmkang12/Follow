@@ -11,6 +11,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,8 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button buttonAT, buttonIfCody, buttonAddPraylist;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonIfCody.setOnClickListener(this);
 
     }
+
 
     @Override
     public void onClick(View v) {

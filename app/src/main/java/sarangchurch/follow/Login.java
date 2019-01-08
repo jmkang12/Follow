@@ -59,6 +59,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             CompareForLogin.bool=false;
             Intent intent = new Intent(getApplicationContext(),EditUserInfo.class);
             startActivity(intent);
+            Login.this.finish();
         }
     }
 
