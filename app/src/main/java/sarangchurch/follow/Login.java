@@ -51,8 +51,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
             else{
                 Toast.makeText(getApplicationContext(), "사용자 정보가 없습니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(),EditUserInfo.class);
-                startActivity(intent);
             }
         }
         if(v==buttonLogout){

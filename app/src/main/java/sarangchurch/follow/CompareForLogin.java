@@ -47,13 +47,13 @@ public class CompareForLogin {
                                 JSONObject jo = jarray.getJSONObject(i);
 
                                 String name = jo.getString("name");
-                                String id = jo.getString("id");
+                                String id = jo.getString("birth");
                                 String job = jo.getString("job");
 
 
                                 HashMap<String, String> item = new HashMap<>();
                                 item.put("name", name);
-                                item.put("id", id);
+                                item.put("birth", id);
                                 item.put("job",job);
 
                                 list.add(item);
