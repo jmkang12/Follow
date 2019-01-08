@@ -1,6 +1,7 @@
 package sarangchurch.follow;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -21,15 +22,16 @@ import java.util.TimerTask;
 
 public class Loading extends AppCompatActivity {
 
-    String loading[] = {"로","로 딩","로 딩 중"};
+    String loading[] = {"로","로 딩","대학8부"};
     TextView textView;
     Boolean bool;
+    public  static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-
+        activity=this;
 
 
         getWindow().getDecorView().setSystemUiVisibility(
@@ -66,8 +68,6 @@ public class Loading extends AppCompatActivity {
         }
 
         loading1();
-
-
 
     }
 
@@ -106,7 +106,6 @@ public class Loading extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);
