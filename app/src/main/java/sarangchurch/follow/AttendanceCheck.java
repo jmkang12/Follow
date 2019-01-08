@@ -97,10 +97,11 @@ public class AttendanceCheck extends AppCompatActivity {
     }
 
 
-    private void   addItemToSheet(String Name, String Grade, final String Date) {
+    private void   addItemToSheet(String Name, String Grade, String Date) {
 
         final String name=Name;
         final String grade=Grade;
+        final String date=Date;
         Log.e("E", "my2");
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzXYrNIRWtdlho_7DjzlETwcEywXUabnrrHLGtM6fJrr6r0fyOr/exec",
@@ -131,7 +132,7 @@ public class AttendanceCheck extends AppCompatActivity {
                 parmas.put("action","update");
                 parmas.put("name",name);
                 parmas.put("grade",grade);
-                parmas.put("date",Date);
+                parmas.put("date",date);
 
                 Log.e("E", "my5");
                 return parmas;
