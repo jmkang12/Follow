@@ -79,38 +79,35 @@ public class AttendanceCheck extends AppCompatActivity {
                                 name=item.substring(n_start+1,n_end);
                                 grade=item.substring(g_start+1,g_end);
                                 String date = new SimpleDateFormat("yyyy-MM-dd",   Locale.getDefault()).format(new Date());
+
                                 date = date.substring(2,4)+"년"+date.substring(5,7)+date.substring(8,10);
                                 Log.e("Date", date);
-                                addItemToSheet(context,name,grade,date, true);
+                                addItemToSheet(context,name,grade,date,true);
                                 checkednumber++;
                             }
-                            else {
-                                for (int j = 0; j < cntChoice; j++) {
-                                    if (!checkedItems.get(j)) {
-                                        String item = listView.getAdapter().getItem(j).toString();
-                                        int n_start,n_end,g_start,g_end;
-                                        n_start=item.lastIndexOf('=');
-                                        n_end=item.indexOf('}');
-                                        g_start=item.indexOf('=');
-                                        g_end=item.indexOf(',');
-                                        String name,grade;
-                                        name=item.substring(n_start+1,n_end);
-                                        grade=item.substring(g_start+1,g_end);
-                                        String date = new SimpleDateFormat("yyyy-MM-dd",   Locale.getDefault()).format(new Date());
-                                        date = date.substring(2,4)+"년"+date.substring(5,7)+date.substring(8,10);
-                                        Log.e("name", name);
-                                        addItemToSheet(context,name,grade,date, false);
-                                    }
-                                }
+                            else{
+                                String item = listView.getAdapter().getItem(i).toString();
+                                int n_start,n_end,g_start,g_end;
+                                n_start=item.lastIndexOf('=');
+                                n_end=item.indexOf('}');
+                                g_start=item.indexOf('=');
+                                g_end=item.indexOf(',');
+                                String name,grade;
+                                name=item.substring(n_start+1,n_end);
+                                grade=item.substring(g_start+1,g_end);
+                                String date = new SimpleDateFormat("yyyy-MM-dd",   Locale.getDefault()).format(new Date());
+
+                                date = date.substring(2,4)+"년"+date.substring(5,7)+date.substring(8,10);
+                                Log.e("Date", date);
+                                addItemToSheet(context,name,grade,date,false);
                             }
                         }
-                    }
-                    else{
+                    } else {
 
+//                Log.i("TAG???","checkedPositions: " + checkedItems.size());
                     }
-
                     addAttendanceNumerToSheet(context,checkednumber,MakeUserInfo.getName());
-                    checkednumber=0;
+                    Log.e("Number", ""+checkednumber);
 
                 }
             }
@@ -125,7 +122,7 @@ public class AttendanceCheck extends AppCompatActivity {
         final String leadername = name;
 
         loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbxu_F1a5Ow5-331YHF_me6Cd2Cau18CV9fAtn-8Lt6Bpn0HWIkf/exec",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "url",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -168,12 +165,11 @@ public class AttendanceCheck extends AppCompatActivity {
 
 
 
-    private void   addItemToSheet(Context context,String Name, String Grade, String Date, boolean bool) {
-
+    private void   addItemToSheet(Context context,String Name, String Grade, String Date,boolean b) {
+        final boolean bool = b;
         final String name=Name;
         final String grade=Grade;
         final String date=Date;
-        final boolean b = bool;
         loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzXYrNIRWtdlho_7DjzlETwcEywXUabnrrHLGtM6fJrr6r0fyOr/exec",
                 new Response.Listener<String>() {
@@ -198,11 +194,11 @@ public class AttendanceCheck extends AppCompatActivity {
                 Map<String, String> parmas = new HashMap<>();
 
                 //here we pass params
-                if(b) {
-                    parmas.put("action", "update");
+                if(bool){
+                    parmas.put("action","update");
                 }
                 else{
-                    parmas.put("action", "update2");
+                    parmas.put("action","update2");
                 }
                 parmas.put("name",name);
                 parmas.put("grade",grade);
