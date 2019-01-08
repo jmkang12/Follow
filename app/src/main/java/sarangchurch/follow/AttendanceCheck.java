@@ -82,12 +82,30 @@ public class AttendanceCheck extends AppCompatActivity {
 
                                 date = date.substring(2,4)+"년"+date.substring(5,7)+date.substring(8,10);
                                 Log.e("Date", date);
-                                addItemToSheet(context,name,grade,date);
+                                addItemToSheet(context,name,grade,date, true);
                                 checkednumber++;
                             }
                         }
-                    } else {
-//                Log.i("TAG???","checkedPositions: " + checkedItems.size());
+                    }
+                    else {
+                        for (int i = 0; i < cntChoice; i++) {
+                            if (!checkedItems.get(i)) {
+                                String item = listView.getAdapter().getItem(i).toString();
+                                int n_start,n_end,g_start,g_end;
+                                n_start=item.lastIndexOf('=');
+                                n_end=item.indexOf('}');
+                                g_start=item.indexOf('=');
+                                g_end=item.indexOf(',');
+                                String name,grade;
+                                name=item.substring(n_start+1,n_end);
+                                grade=item.substring(g_start+1,g_end);
+                                String date = new SimpleDateFormat("yyyy-MM-dd",   Locale.getDefault()).format(new Date());
+                                date = date.substring(2,4)+"년"+date.substring(5,7)+date.substring(8,10);
+                                Log.e("Date", date);
+                                addItemToSheet(context,name,grade,date, false);
+                                checkednumber++;
+                            }
+                        }
                     }
                     addAttendanceNumerToSheet(context,checkednumber,MakeUserInfo.getName());
                     Log.e("Number", ""+checkednumber);
@@ -148,11 +166,12 @@ public class AttendanceCheck extends AppCompatActivity {
 
 
 
-    private void   addItemToSheet(Context context,String Name, String Grade, String Date) {
+    private void   addItemToSheet(Context context,String Name, String Grade, String Date, boolean bool) {
 
         final String name=Name;
         final String grade=Grade;
         final String date=Date;
+        final boolean b = bool;
         loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzXYrNIRWtdlho_7DjzlETwcEywXUabnrrHLGtM6fJrr6r0fyOr/exec",
                 new Response.Listener<String>() {
@@ -177,7 +196,12 @@ public class AttendanceCheck extends AppCompatActivity {
                 Map<String, String> parmas = new HashMap<>();
 
                 //here we pass params
-                parmas.put("action","update");
+                if(b) {
+                    parmas.put("action", "update");
+                }
+                else{
+                    parmas.put("action", "update2");
+                }
                 parmas.put("name",name);
                 parmas.put("grade",grade);
                 parmas.put("date",date);
