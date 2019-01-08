@@ -102,14 +102,11 @@ public class AttendanceCheck extends AppCompatActivity {
                                 addItemToSheet(context,name,grade,date,false);
                             }
                         }
-                    } else {
-
-//                Log.i("TAG???","checkedPositions: " + checkedItems.size());
                     }
+                    else {  }
                     addAttendanceNumerToSheet(context,checkednumber,MakeUserInfo.getName());
                     Log.e("Number", ""+checkednumber);
                     checkednumber=0;
-
                 }
             }
 

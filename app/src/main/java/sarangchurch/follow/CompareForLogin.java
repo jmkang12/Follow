@@ -24,7 +24,7 @@ public class CompareForLogin {
     ProgressDialog loading;
     static boolean bool=false;
 
-    public void CompareName(final String cpname, Context context){
+    public void CompareName(final String cpname, final String birth, Context context){
 
         Log.e("ERR",MakeUserInfo.getName());
 
@@ -67,15 +67,14 @@ public class CompareForLogin {
 
                         for(int i=0; i<list.size();i++) {
                             if(cpname.equals(list.get(i).get("name"))){
-                                CompareForLogin.bool =true;
-                                break;
+                                if(birth.equals(list.get(i).get("birth"))){
+                                    MakeUserInfo.setJob(list.get(i).get("job"));
+                                    CompareForLogin.bool =true;
+                                    break;
+                                }
                             }
-
                         }
-
                         loading.dismiss();
-
-
                     }
                 },
 

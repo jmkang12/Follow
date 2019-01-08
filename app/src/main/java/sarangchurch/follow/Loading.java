@@ -60,7 +60,7 @@ public class Loading extends AppCompatActivity {
 
         if(bool){
             CompareForLogin temp = new CompareForLogin();
-            temp.CompareName(MakeUserInfo.getName(),this);
+            temp.CompareName(MakeUserInfo.getName(),MakeUserInfo.getBirth(),this);
             bool=CompareForLogin.bool;
             Log.e("check"," "+bool);
         }
