@@ -89,7 +89,7 @@ public class AttendanceCheck extends AppCompatActivity {
                     } else {
 //                Log.i("TAG???","checkedPositions: " + checkedItems.size());
                     }
-                    addAttendanceNumerToSheet(context,checkednumber);
+                    addAttendanceNumerToSheet(context,checkednumber,MakeUserInfo.getName());
                     Log.e("Number", ""+checkednumber);
 
                 }
@@ -100,8 +100,9 @@ public class AttendanceCheck extends AppCompatActivity {
     }
 
 
-    private void addAttendanceNumerToSheet(Context context, Integer checkednumber){
+    private void addAttendanceNumerToSheet(Context context, Integer checkednumber, String name){
         final String number = checkednumber.toString();
+        final String leadername = name;
 
         loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "url",
@@ -128,6 +129,7 @@ public class AttendanceCheck extends AppCompatActivity {
 
                 //here we pass params
                 parmas.put("action","add");
+                parmas.put("leadername",leadername);
                 parmas.put("number",number);
 
                 return parmas;
