@@ -32,9 +32,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class AttendanceCheck extends AppCompatActivity {
@@ -76,7 +79,8 @@ public class AttendanceCheck extends AppCompatActivity {
                                 String name,grade;
                                 name=item.substring(n_start+1,n_end);
                                 grade=item.substring(g_start+1,g_end);
-                                addItemToSheet(name,grade);
+                                String date = new SimpleDateFormat("yyyy-MM-dd",   Locale.getDefault()).format(new Date());
+                                addItemToSheet(name,grade,date);
                                 Log.e("TAG", name + " was selected"+grade);
                             }
                         }
@@ -84,6 +88,7 @@ public class AttendanceCheck extends AppCompatActivity {
                         Log.e("EERRR", "NULL");
 //                Log.i("TAG???","checkedPositions: " + checkedItems.size());
                     }
+
                 }
             }
 
@@ -92,7 +97,7 @@ public class AttendanceCheck extends AppCompatActivity {
     }
 
 
-    private void   addItemToSheet(String Name,String Grade) {
+    private void   addItemToSheet(String Name, String Grade, final String Date) {
 
         final String name=Name;
         final String grade=Grade;
@@ -126,6 +131,7 @@ public class AttendanceCheck extends AppCompatActivity {
                 parmas.put("action","update");
                 parmas.put("name",name);
                 parmas.put("grade",grade);
+                parmas.put("date",Date);
 
                 Log.e("E", "my5");
                 return parmas;
