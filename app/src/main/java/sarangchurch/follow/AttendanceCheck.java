@@ -127,6 +127,7 @@ public class AttendanceCheck extends AppCompatActivity {
 
                         loading.dismiss();
                         Toast.makeText(AttendanceCheck.this,response,Toast.LENGTH_LONG).show();
+                        MakeUserInfo.ReadFile();
                         AttendanceCheck.this.finish();
                     }
                 },
