@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <EditText
+        android:id="@+id/et_pray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="번호를 매겨주셔야 합니다. 그대로 기도편지로 작성되요."
+        android:inputType="textMultiLine"
+        android:minLines="7" />
+
+    <Button
+        android:id="@+id/addpray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="제출" />
+
+
+</LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

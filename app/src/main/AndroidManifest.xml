@@ -29,6 +29,8 @@
         <activity android:name=".EditUserInfo"/>
         <activity android:name=".Login"/>
         <activity android:name=".AttendanceCheck"/>
+        <activity android:name=".Praylist"/>
+        <activity android:name=".AddPray"/>
     </application>
 
 </manifest>

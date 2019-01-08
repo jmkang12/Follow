@@ -8,12 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckedTextView;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -40,15 +36,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class AttendanceCheck extends AppCompatActivity {
+public class ManageLeaders extends AppCompatActivity {
 
     ListView listView;
     ListAdapter adapter;
     ProgressDialog loading;
     Button buttonApply;
 
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attendance_check_list);
@@ -126,7 +120,7 @@ public class AttendanceCheck extends AppCompatActivity {
                     public void onResponse(String response) {
 
                         loading.dismiss();
-                        Toast.makeText(AttendanceCheck.this,response,Toast.LENGTH_LONG).show();
+                        Toast.makeText(ManageLeaders.this,response,Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(intent);
 
@@ -168,7 +162,7 @@ public class AttendanceCheck extends AppCompatActivity {
         final String grade=Grade;
         final String date=Date;
         loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzXYrNIRWtdlho_7DjzlETwcEywXUabnrrHLGtM6fJrr6r0fyOr/exec",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzt7N8IyGFdkUePMkwpWyViPYL3F2i856KynC0oeC-dXlksGMQ/exec?action=getItems",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -191,16 +185,9 @@ public class AttendanceCheck extends AppCompatActivity {
                 Map<String, String> parmas = new HashMap<>();
 
                 //here we pass params
-                if(bool){
-                    parmas.put("action","update");
-                }
-                else{
-                    parmas.put("action","update2");
-                }
-                parmas.put("name",name);
-                parmas.put("grade",grade);
-                parmas.put("date",date);
 
+                parmas.put("action","getItems");
+                parmas.put("codyname",MakeUserInfo.getName());
                 return parmas;
             }
         };
@@ -268,7 +255,7 @@ public class AttendanceCheck extends AppCompatActivity {
                 String grade = jo.getString("grade");
 
                 HashMap<String, String> item = new HashMap<>();
-               // item.put("leadername", leadername);
+                // item.put("leadername", leadername);
                 item.put("name", name);
                 item.put("grade",grade+"학년");
 
@@ -281,8 +268,8 @@ public class AttendanceCheck extends AppCompatActivity {
         }
 
         adapter = new SimpleAdapter(this,list,R.layout.attendance_check_list_row,
-            new String[]{"name","grade"},new int[]{R.id.name_blankAC,R.id.grade_blankAC});
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+                new String[]{"name","grade"},new int[]{R.id.name_blankAC,R.id.grade_blankAC});
+        // listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(adapter);
 
         loading.dismiss();

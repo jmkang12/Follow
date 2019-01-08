@@ -7,34 +7,27 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/btn_add_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="130dp"
-        android:layout_marginTop="194dp"
-        android:text="Add Item"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <Button
-        android:id="@+id/btn_read_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:text="Read Item"
-        app:layout_constraintStart_toStartOf="@+id/btn_add_item"
-        app:layout_constraintTop_toBottomOf="@+id/btn_add_item" />
-    <Button
-        android:id="@+id/btn_file"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:text="File"
-        app:layout_constraintStart_toStartOf="@+id/btn_read_item"
-        app:layout_constraintTop_toBottomOf="@+id/btn_read_item" />
-
-    <Button
         android:id="@+id/atcheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="출석체크" />
+        android:text="출석체크"
+        android:layout_marginEnd="130dp"
+        android:layout_marginTop="194dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_if_cody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="리더관리"
+        app:layout_constraintTop_toBottomOf="@id/atcheck" />
+
+    <Button
+        android:id="@+id/btn_addpraylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="기도편지"
+        app:layout_constraintTop_toBottomOf="@id/btn_if_cody"/>
+
 </android.support.constraint.ConstraintLayout>
