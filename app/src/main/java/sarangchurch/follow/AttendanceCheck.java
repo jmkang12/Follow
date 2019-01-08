@@ -79,7 +79,6 @@ public class AttendanceCheck extends AppCompatActivity {
                                 name=item.substring(n_start+1,n_end);
                                 grade=item.substring(g_start+1,g_end);
                                 String date = new SimpleDateFormat("yyyy-MM-dd",   Locale.getDefault()).format(new Date());
-
                                 date = date.substring(2,4)+"년"+date.substring(5,7)+date.substring(8,10);
                                 Log.e("Date", date);
                                 addItemToSheet(context,name,grade,date, true);
@@ -101,7 +100,6 @@ public class AttendanceCheck extends AppCompatActivity {
                                         date = date.substring(2,4)+"년"+date.substring(5,7)+date.substring(8,10);
                                         Log.e("name", name);
                                         addItemToSheet(context,name,grade,date, false);
-                                        checkednumber++;
                                     }
                                 }
                             }
@@ -112,7 +110,7 @@ public class AttendanceCheck extends AppCompatActivity {
                     }
 
                     addAttendanceNumerToSheet(context,checkednumber,MakeUserInfo.getName());
-                    Log.e("Number", ""+checkednumber);
+                    checkednumber=0;
 
                 }
             }

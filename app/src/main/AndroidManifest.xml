@@ -24,8 +24,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"/>
-        <activity android:name=".Additem"/>
-        <activity android:name=".Listitem"/>
         <activity android:name=".EditUserInfo"/>
         <activity android:name=".Login"/>
         <activity android:name=".AttendanceCheck"/>
