@@ -108,6 +108,7 @@ public class AttendanceCheck extends AppCompatActivity {
                     }
                     addAttendanceNumerToSheet(context,checkednumber,MakeUserInfo.getName());
                     Log.e("Number", ""+checkednumber);
+                    checkednumber=0;
 
                 }
             }
@@ -122,7 +123,7 @@ public class AttendanceCheck extends AppCompatActivity {
         final String leadername = name;
 
         loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "url",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbxu_F1a5Ow5-331YHF_me6Cd2Cau18CV9fAtn-8Lt6Bpn0HWIkf/exec",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -148,7 +149,6 @@ public class AttendanceCheck extends AppCompatActivity {
                 parmas.put("action","add");
                 parmas.put("leadername",leadername);
                 parmas.put("number",number);
-
                 return parmas;
             }
         };
@@ -177,9 +177,9 @@ public class AttendanceCheck extends AppCompatActivity {
                     public void onResponse(String response) {
 
                         loading.dismiss();
-                        Toast.makeText(AttendanceCheck.this,response,Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(intent);
+                        //Toast.makeText(AttendanceCheck.this,response,Toast.LENGTH_LONG).show();
+                        //Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        //startActivity(intent);
 
                     }
                 },
