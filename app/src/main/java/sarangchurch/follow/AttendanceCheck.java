@@ -61,13 +61,11 @@ public class AttendanceCheck extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v == buttonApply) {
-                    Log.e("E", "my");
                     List<String> temp = null;
                     int cntChoice = listView.getCount();
+                    int checkednumber=0;
                     SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
-                    Log.e("TAG???", "checkedPositions: " + checkedItems.get(3));
                     if (checkedItems != null) {
-                        Log.i("TAG???", "checkedPositions: " + checkedItems.size());
                         for (int i = 0; i < cntChoice; i++) {
                             if (checkedItems.get(i)) {
                                 String item = listView.getAdapter().getItem(i).toString();
@@ -80,14 +78,17 @@ public class AttendanceCheck extends AppCompatActivity {
                                 name=item.substring(n_start+1,n_end);
                                 grade=item.substring(g_start+1,g_end);
                                 String date = new SimpleDateFormat("yyyy-MM-dd",   Locale.getDefault()).format(new Date());
+
+                                date = date.substring(2,4)+date.substring(5,7)+date.substring(8,10);
+                                Log.e("Date", date);
                                 addItemToSheet(name,grade,date);
-                                Log.e("TAG", name + " was selected"+grade);
+                                checkednumber++;
                             }
                         }
                     } else {
-                        Log.e("EERRR", "NULL");
 //                Log.i("TAG???","checkedPositions: " + checkedItems.size());
                     }
+                    Log.e("Number", ""+checkednumber);
 
                 }
             }
@@ -102,14 +103,12 @@ public class AttendanceCheck extends AppCompatActivity {
         final String name=Name;
         final String grade=Grade;
         final String date=Date;
-        Log.e("E", "my2");
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzXYrNIRWtdlho_7DjzlETwcEywXUabnrrHLGtM6fJrr6r0fyOr/exec",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        Log.e("E", "my3");
                         loading.dismiss();
                         Toast.makeText(AttendanceCheck.this,response,Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
@@ -120,7 +119,6 @@ public class AttendanceCheck extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("E", "my4");
                     }
                 }
         ) {
@@ -134,7 +132,6 @@ public class AttendanceCheck extends AppCompatActivity {
                 parmas.put("grade",grade);
                 parmas.put("date",date);
 
-                Log.e("E", "my5");
                 return parmas;
             }
         };
@@ -153,7 +150,6 @@ public class AttendanceCheck extends AppCompatActivity {
     private void getItems() {
 
         loading =  ProgressDialog.show(this,"Loading","please wait",false,true);
-        Log.e("E","www");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbzt7N8IyGFdkUePMkwpWyViPYL3F2i856KynC0oeC-dXlksGMQ/exec?action=getItems",
                 new Response.Listener<String>() {
                     @Override
@@ -182,19 +178,19 @@ public class AttendanceCheck extends AppCompatActivity {
 
 
     private void parseItems(String jsonResposnce) {
-        Log.e("E","www2");
+
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
 
         try {
-            Log.e("E",jsonResposnce);
+
             JSONObject jobj = new JSONObject(jsonResposnce);
             JSONArray jarray = jobj.getJSONArray("items");
 
-            Log.e("E","www4");
+
             for (int i = 0; i < jarray.length(); i++) {
 
                 JSONObject jo = jarray.getJSONObject(i);
-                Log.e("E","www5");
+
                 String leadername = jo.getString("leadername");
                 if(!leadername.equals(MakeUserInfo.getName())){
                     continue;
