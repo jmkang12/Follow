@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
         if(v==buttonIfCody){
-            Log.e("e","눌림");
+            Intent intent = new Intent(getApplicationContext(),ManageLeaders.class);
+            startActivity(intent);
         }
         if(v==buttonAddPraylist){
             Intent intent = new Intent(getApplicationContext(),Praylist.class);

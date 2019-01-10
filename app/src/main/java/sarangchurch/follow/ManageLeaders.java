@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -39,10 +40,12 @@ import java.util.Map;
 public class ManageLeaders extends AppCompatActivity {
 
     ListView listView;
-    ListAdapter adapter;
     ProgressDialog loading;
     Button buttonApply;
 
+
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attendance_check_list);
@@ -56,157 +59,33 @@ public class ManageLeaders extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v == buttonApply) {
-                    List<String> temp = null;
+                    SparseBooleanArray booleanArray = listView.getCheckedItemPositions();
                     int cntChoice = listView.getCount();
-                    Integer checkednumber=0;
-                    SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
-                    if (checkedItems != null) {
+
+                    if (booleanArray != null) {
                         for (int i = 0; i < cntChoice; i++) {
-                            if (checkedItems.get(i)) {
+                            if (booleanArray.get(i)) {
                                 String item = listView.getAdapter().getItem(i).toString();
-                                int n_start,n_end,g_start,g_end;
-                                n_start=item.lastIndexOf('=');
-                                n_end=item.indexOf('}');
-                                g_start=item.indexOf('=');
-                                g_end=item.indexOf(',');
-                                String name,grade;
-                                name=item.substring(n_start+1,n_end);
-                                grade=item.substring(g_start+1,g_end);
-                                String date = new SimpleDateFormat("yyyy-MM-dd",   Locale.getDefault()).format(new Date());
+                                MakeUserInfo.setName(item);
+                                Intent intent = new Intent(getApplicationContext(), AttendanceCheck.class);
+                                startActivity(intent);
 
-                                date = date.substring(2,4)+"년"+date.substring(5,7)+date.substring(8,10);
-                                Log.e("Date", date);
-                                addItemToSheet(context,name,grade,date,true);
-                                checkednumber++;
-                            }
-                            else{
-                                String item = listView.getAdapter().getItem(i).toString();
-                                int n_start,n_end,g_start,g_end;
-                                n_start=item.lastIndexOf('=');
-                                n_end=item.indexOf('}');
-                                g_start=item.indexOf('=');
-                                g_end=item.indexOf(',');
-                                String name,grade;
-                                name=item.substring(n_start+1,n_end);
-                                grade=item.substring(g_start+1,g_end);
-                                String date = new SimpleDateFormat("yyyy-MM-dd",   Locale.getDefault()).format(new Date());
-
-                                date = date.substring(2,4)+"년"+date.substring(5,7)+date.substring(8,10);
-                                Log.e("Date", date);
-                                addItemToSheet(context,name,grade,date,false);
                             }
                         }
                     }
-                    else {  }
-                    addAttendanceNumerToSheet(context,checkednumber,MakeUserInfo.getName());
-                    Log.e("Number", ""+checkednumber);
-                    checkednumber=0;
+                    else{
+                        Toast.makeText(getApplicationContext(), "선택 해주세요", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
-
         });
-
-    }
-
-
-    private void addAttendanceNumerToSheet(Context context, Integer checkednumber, String name){
-        final String number = checkednumber.toString();
-        final String leadername = name;
-
-        loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbxu_F1a5Ow5-331YHF_me6Cd2Cau18CV9fAtn-8Lt6Bpn0HWIkf/exec",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        loading.dismiss();
-                        Toast.makeText(ManageLeaders.this,response,Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(intent);
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> parmas = new HashMap<>();
-
-                //here we pass params
-                parmas.put("action","add");
-                parmas.put("leadername",leadername);
-                parmas.put("number",number);
-                return parmas;
-            }
-        };
-
-        int socketTimeOut = 50000;// u can change this .. here it is 50 seconds
-
-        RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        stringRequest.setRetryPolicy(retryPolicy);
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        queue.add(stringRequest);
-    }
-
-
-
-    private void   addItemToSheet(Context context,String Name, String Grade, String Date,boolean b) {
-        final boolean bool = b;
-        final String name=Name;
-        final String grade=Grade;
-        final String date=Date;
-        loading =  ProgressDialog.show(context,"Loading","please wait",false,true);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzt7N8IyGFdkUePMkwpWyViPYL3F2i856KynC0oeC-dXlksGMQ/exec?action=getItems",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        loading.dismiss();
-                        //Toast.makeText(AttendanceCheck.this,response,Toast.LENGTH_LONG).show();
-                        //Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                        //startActivity(intent);
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> parmas = new HashMap<>();
-
-                //here we pass params
-
-                parmas.put("action","getItems");
-                parmas.put("codyname",MakeUserInfo.getName());
-                return parmas;
-            }
-        };
-
-        int socketTimeOut = 50000;// u can change this .. here it is 50 seconds
-
-        RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        stringRequest.setRetryPolicy(retryPolicy);
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        queue.add(stringRequest);
     }
 
 
     private void getItems() {
 
         loading =  ProgressDialog.show(this,"Loading","please wait",false,true);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbzt7N8IyGFdkUePMkwpWyViPYL3F2i856KynC0oeC-dXlksGMQ/exec?action=getItems",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxu_F1a5Ow5-331YHF_me6Cd2Cau18CV9fAtn-8Lt6Bpn0HWIkf/exec?action=getItems",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -220,7 +99,7 @@ public class ManageLeaders extends AppCompatActivity {
 
                     }
                 }
-        );
+        ) ;
 
         int socketTimeOut = 50000;
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
@@ -235,8 +114,7 @@ public class ManageLeaders extends AppCompatActivity {
 
     private void parseItems(String jsonResposnce) {
 
-        ArrayList<HashMap<String, String>> list = new ArrayList<>();
-
+        ArrayList<String> stringList= new ArrayList<>();
         try {
 
             JSONObject jobj = new JSONObject(jsonResposnce);
@@ -247,30 +125,23 @@ public class ManageLeaders extends AppCompatActivity {
 
                 JSONObject jo = jarray.getJSONObject(i);
 
-                String leadername = jo.getString("leadername");
-                if(!leadername.equals(MakeUserInfo.getName())){
+                String codyname = jo.getString("codyname");
+                if(!codyname.equals(MakeUserInfo.getName())){
                     continue;
                 }
                 String name = jo.getString("name");
-                String grade = jo.getString("grade");
+                stringList.add(name);
 
-                HashMap<String, String> item = new HashMap<>();
-                // item.put("leadername", leadername);
-                item.put("name", name);
-                item.put("grade",grade+"학년");
-
-                list.add(item);
 
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.e("ERR","ERROR");
+            Log.e("ERR","에러");
         }
 
-        adapter = new SimpleAdapter(this,list,R.layout.attendance_check_list_row,
-                new String[]{"name","grade"},new int[]{R.id.name_blankAC,R.id.grade_blankAC});
-        // listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listView.setAdapter(adapter);
+        ArrayAdapter<String> stadapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_single_choice, stringList);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listView.setAdapter(stadapter);
 
         loading.dismiss();
     }

@@ -31,6 +31,7 @@
         <activity android:name=".AttendanceCheck"/>
         <activity android:name=".Praylist"/>
         <activity android:name=".AddPray"/>
+        <activity android:name=".ManageLeaders"/>
     </application>
 
 </manifest>
